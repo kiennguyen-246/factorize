@@ -12,7 +12,7 @@ class Formulation:
         raise NotImplementedError
 
     # Helper functions
-    def hubo_optimize(self, coef=1, term=()):
+    def hubo_to_qubo(self, coef=1, term=()):
         """
         Recursively reduce a HUBO term until it becomes QUBO terms.
         The formulation for optimization is: x1x2x3 = x3s + 2x1x2 - 4x1s - 4x2s + 6s
@@ -21,27 +21,49 @@ class Formulation:
         """
         # print(coef, term)
         if len(term) <= 2:
-            return {term: coef}
+            return {term: coef}, 0
         self.var_map[("s", self.var_cnt)] = self.var_cnt
         self.var_cnt += 1
         new_terms = {}
-        tuple1 = term[:-2]
-        tuple2 = term[-2:-1]
-        tuple3 = term[-1:]
-        slack = self.var_map[("s", self.var_cnt - 1)]
-        new_terms[tuple3 + (slack,)] = coef
-        new_terms[tuple1 + tuple2] = 2 * coef
-        new_terms[tuple1 + (slack,)] = -4 * coef
-        new_terms[tuple2 + (slack,)] = -4 * coef
-        new_terms[(slack,)] = 6 * coef
+        new_offset = 0
+        prefix = ()
+        x = term[:-2]
+        # prefix = term[:-3]
+        # x = term[-3:-2]
+        y = term[-2:-1]
+        z = term[-1:]
+        w = (self.var_map[("s", self.var_cnt - 1)],)
+        if coef < 0:
+            new_terms[x + w] = coef
+            new_terms[y + w] = coef
+            new_terms[z + w] = coef
+            new_terms[w] = -2 * coef
+        else:
+            new_terms[x + w] = coef
+            new_terms[y + w] = coef
+            new_terms[z + w] = coef
+            new_terms[w] = -1 * coef
+            new_terms[x + y] = coef
+            new_terms[y + z] = coef
+            new_terms[z + x] = coef
+            new_terms[x] = -coef
+            new_terms[y] = -coef
+            new_terms[z] = -coef
+            new_offset = coef
+        # if len(term) > 3:
+        #     new_terms = {prefix + new_term: new_terms[new_term] for new_term in new_terms}
+        #     new_terms[prefix] = new_offset
+        #     new_offset = 0
         ans_terms = {}
+        ans_offset = new_offset
         for new_term in new_terms:
-            opt_new_terms = self.hubo_optimize(new_terms[new_term], new_term)
+            opt_new_terms, opt_new_offset = self.hubo_to_qubo(new_terms[new_term], new_term)
             for opt_new_term in opt_new_terms:
                 if opt_new_term not in ans_terms:
                     ans_terms[opt_new_term] = opt_new_terms[opt_new_term]
                 else:
                     ans_terms[opt_new_term] += opt_new_terms[opt_new_term]
-        return ans_terms
+            ans_offset += opt_new_offset
+        return ans_terms, ans_offset
 
 

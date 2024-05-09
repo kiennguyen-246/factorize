@@ -1,0 +1,96 @@
+{
+    "config": "DI1000-213.70166120084326s-1_A200",
+    "num_vars": 15,
+    "num_qubit": 18,
+    "time_elapsed": 0.0180661678314209,
+    "best_state": {
+        "sample": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "energy": -3682.0,
+        "chain_break_fraction": 0.0
+    },
+    "chain_strength_prefactor": 0.25,
+    "chain_strength": 213.70166120084326,
+    "max_chain_length": 2,
+    "timing_info": {
+        "qpu_sampling_time": 323720.0,
+        "qpu_anneal_time_per_sample": 200.0,
+        "qpu_readout_time_per_sample": 103.14,
+        "qpu_access_time": 339480.77,
+        "qpu_access_overhead_time": 860.23,
+        "qpu_programming_time": 15760.77,
+        "qpu_delay_time_per_sample": 20.58,
+        "post_processing_overhead_time": 100.0,
+        "total_post_processing_time": 100.0
+    },
+    "embedding_info": {
+        "embedding": {
+            "3": [
+                4088,
+                1761
+            ],
+            "2": [
+                4074
+            ],
+            "0": [
+                1671,
+                4044
+            ],
+            "1": [
+                1656,
+                4029
+            ],
+            "4": [
+                1715
+            ],
+            "5": [
+                1730
+            ],
+            "6": [
+                1806
+            ],
+            "7": [
+                1760
+            ],
+            "9": [
+                3998
+            ],
+            "8": [
+                1685
+            ],
+            "10": [
+                4059
+            ],
+            "11": [
+                4103
+            ],
+            "12": [
+                1821
+            ],
+            "13": [
+                1700
+            ],
+            "14": [
+                4118
+            ]
+        },
+        "chain_break_method": "majority_vote",
+        "embedding_parameters": {},
+        "chain_strength": 213.70166120084326
+    }
+}
