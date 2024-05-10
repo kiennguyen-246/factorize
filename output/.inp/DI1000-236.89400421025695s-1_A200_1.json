@@ -1,0 +1,90 @@
+{
+    "config": "DI1000-236.89400421025695s-1_A200",
+    "num_vars": 13,
+    "num_qubit": 18,
+    "time_elapsed": 0.10008740425109863,
+    "best_state": {
+        "sample": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "energy": -3716.0,
+        "chain_break_fraction": 0.0
+    },
+    "chain_strength_prefactor": 0.25,
+    "chain_strength": 236.89400421025695,
+    "max_chain_length": 2,
+    "timing_info": {
+        "qpu_sampling_time": 278860.0,
+        "qpu_anneal_time_per_sample": 200.0,
+        "qpu_readout_time_per_sample": 58.28,
+        "qpu_access_time": 294785.17,
+        "qpu_access_overhead_time": 583.83,
+        "qpu_programming_time": 15925.17,
+        "qpu_delay_time_per_sample": 20.58,
+        "post_processing_overhead_time": 1.0,
+        "total_post_processing_time": 1.0
+    },
+    "embedding_info": {
+        "embedding": {
+            "3": [
+                1499,
+                5437
+            ],
+            "2": [
+                5527,
+                1454
+            ],
+            "0": [
+                5572,
+                1439
+            ],
+            "5": [
+                5542
+            ],
+            "1": [
+                1529,
+                5557
+            ],
+            "6": [
+                1528
+            ],
+            "7": [
+                1574
+            ],
+            "8": [
+                1484
+            ],
+            "9": [
+                5587
+            ],
+            "4": [
+                1469
+            ],
+            "10": [
+                5512
+            ],
+            "11": [
+                5602
+            ],
+            "12": [
+                1589,
+                5513
+            ]
+        },
+        "chain_break_method": "majority_vote",
+        "embedding_parameters": {},
+        "chain_strength": 236.89400421025695
+    }
+}

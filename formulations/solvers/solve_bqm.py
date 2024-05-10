@@ -33,14 +33,14 @@ def solve_quantum_annealing(bqm,
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     # get_embedding(bqm, output_dir + embed_config + ".json")
-    with open(output_dir + embed_config + ".json", "r") as f:
-        embedding = json.load(f)
-    embedding = {int(k): v for k, v in embedding.items()}
-    try:
-        sampler = FixedEmbeddingComposite(DWaveSampler(), embedding=embedding)
-    except DisconnectedChainError as e:
-        raise RuntimeError(e)
-    # sampler = EmbeddingComposite(DWaveSampler())
+    # with open(output_dir + embed_config + ".json", "r") as f:
+    #     embedding = json.load(f)
+    # embedding = {int(k): v for k, v in embedding.items()}
+    # try:
+    #     sampler = FixedEmbeddingComposite(DWaveSampler(), embedding=embedding)
+    # except DisconnectedChainError as e:
+    #     raise RuntimeError(e)
+    sampler = EmbeddingComposite(DWaveSampler())
 
     start = time.time()
     if anneal_schedule_id == -1:
@@ -105,7 +105,7 @@ def solve_simulated_annealing(bqm, method="?_", num_reads=1000):
     # config = method + str(num_reads) + "-SA" + "".join(str(beta_range).split(" ")) + "s" + str(num_sweeps)
     solver_config = method + str(num_reads) + "-SA" + "s" + str(num_sweeps)
     os.environ["SOLVER_CONFIG"] = solver_config
-    data_name = os.getenv("PHYLO_FILE")
+    data_name = os.getenv("INPUT_FILE")
     output_dir = "output/" + data_name + "/"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)

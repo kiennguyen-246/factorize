@@ -1,0 +1,6 @@
+{
+    "num_reads": 1000,
+    "non_zero": 290,
+    "sol_pct": 0.001,
+    "opt_pct": 0.0
+}
