@@ -1,38 +1,35 @@
 {
-    "config": "DI1000-212.97762010752834s-1_A200",
-    "num_vars": 15,
-    "num_qubit": 19,
-    "time_elapsed": 0.02756023406982422,
+    "config": "DI1000-208.39865642561134s-1_A200",
+    "num_vars": 12,
+    "num_qubit": 14,
+    "time_elapsed": 0.03328108787536621,
     "best_state": {
         "sample": [
             1,
             1,
-            0,
-            1,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
             1,
             1,
             0,
+            0,
+            0,
+            0,
+            0,
+            1,
             0,
             0
         ],
-        "energy": -3460.0,
-        "chain_break_fraction": 0.06666666666666667
+        "energy": -2752.0,
+        "chain_break_fraction": 0.16666666666666666
     },
     "chain_strength_prefactor": 0.25,
-    "chain_strength": 212.97762010752834,
+    "chain_strength": 208.39865642561134,
     "max_chain_length": 2,
     "timing_info": {
-        "qpu_sampling_time": 261800.0,
+        "qpu_sampling_time": 273860.0,
         "qpu_anneal_time_per_sample": 200.0,
-        "qpu_readout_time_per_sample": 41.22,
-        "qpu_access_time": 277727.17,
-        "qpu_access_overhead_time": 1736.83,
+        "qpu_readout_time_per_sample": 53.28,
+        "qpu_access_time": 289787.17,
+        "qpu_access_overhead_time": 463.83,
         "qpu_programming_time": 15927.17,
         "qpu_delay_time_per_sample": 20.58,
         "post_processing_overhead_time": 1.0,
@@ -41,57 +38,46 @@
     "embedding_info": {
         "embedding": {
             "3": [
-                3856,
-                349
+                986
             ],
             "2": [
-                439,
-                3796
+                971
             ],
             "0": [
-                3781,
-                304
+                5074,
+                957
             ],
             "4": [
-                3826
+                5089
             ],
             "1": [
-                3750,
-                3751
+                1001,
+                5164
             ],
             "5": [
-                3766
+                5029
             ],
             "6": [
-                394
+                5150
             ],
             "7": [
-                334
+                5179
             ],
             "9": [
-                3765
+                942
             ],
             "8": [
-                274
+                5105
             ],
             "10": [
-                3811
+                5120
             ],
             "11": [
-                3841
-            ],
-            "12": [
-                424
-            ],
-            "13": [
-                289
-            ],
-            "14": [
-                319
+                5135
             ]
         },
         "chain_break_method": "majority_vote",
         "embedding_parameters": {},
-        "chain_strength": 212.97762010752834
+        "chain_strength": 208.39865642561134
     }
 }

@@ -32,15 +32,15 @@ def solve_quantum_annealing(bqm,
     output_dir = "output/" + data_name + "/"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-    # get_embedding(bqm, output_dir + embed_config + ".json")
-    # with open(output_dir + embed_config + ".json", "r") as f:
-    #     embedding = json.load(f)
-    # embedding = {int(k): v for k, v in embedding.items()}
-    # try:
-    #     sampler = FixedEmbeddingComposite(DWaveSampler(), embedding=embedding)
-    # except DisconnectedChainError as e:
-    #     raise RuntimeError(e)
-    sampler = EmbeddingComposite(DWaveSampler())
+    get_embedding(bqm, output_dir + embed_config + ".json")
+    with open(output_dir + embed_config + ".json", "r") as f:
+        embedding = json.load(f)
+    embedding = {int(k): v for k, v in embedding.items()}
+    try:
+        sampler = FixedEmbeddingComposite(DWaveSampler(), embedding=embedding)
+    except DisconnectedChainError as e:
+        raise RuntimeError(e)
+    # sampler = EmbeddingComposite(DWaveSampler())
 
     start = time.time()
     if anneal_schedule_id == -1:

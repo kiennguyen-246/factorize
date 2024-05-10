@@ -91,7 +91,25 @@ class DirectFormulation(Formulation):
         # bqm.fix_variable(self.var_map[("x", 6)], 0)
         # bqm.fix_variable(self.var_map[("x", 7)], 1)
 
-        ## 1961
+        # 391
+        # bqm.fix_variable(self.var_map[("x", 1)], 0)
+        # bqm.fix_variable(self.var_map[("x", 2)], 0)
+        # bqm.fix_variable(self.var_map[("x", 3)], 0)
+        # bqm.fix_variable(self.var_map[("x", 4)], 1)
+        # bqm.fix_variable(self.var_map[("x", 6)], 1)
+        # bqm.fix_variable(self.var_map[("x", 7)], 1)
+        # bqm.fix_variable(self.var_map[("x", 8)], 0)
+        # bqm.fix_variable(self.var_map[("x", 9)], 1)
+        # self.fixed_variables[("x", 1)] = 0
+        # self.fixed_variables[("x", 2)] = 0
+        # self.fixed_variables[("x", 3)] = 0
+        # self.fixed_variables[("x", 4)] = 1
+        # self.fixed_variables[("x", 6)] = 1
+        # self.fixed_variables[("x", 7)] = 1
+        # self.fixed_variables[("x", 8)] = 0
+        # self.fixed_variables[("x", 9)] = 1
+
+        # # 1961
         # bqm.fix_variable(self.var_map[("x", 1)], 0)
         # bqm.fix_variable(self.var_map[("x", 2)], 1)
         # bqm.fix_variable(self.var_map[("x", 3)], 0)
@@ -103,24 +121,52 @@ class DirectFormulation(Formulation):
         # bqm.fix_variable(self.var_map[("x", 10)], 1)
         # bqm.fix_variable(self.var_map[("x", 11)], 1)
 
+        self.fixed_var_map = self.var_map.copy()
+        for fixed_key in self.fixed_variables.keys():
+            self.fixed_var_map.pop(fixed_key)
+        new_cnt = 0
+        for key in self.fixed_var_map.keys():
+            self.fixed_var_map[key] = new_cnt
+            new_cnt += 1
+
         # Solve QUBO
-        # response = solve_simulated_annealing(bqm=bqm, method="DI", num_reads=1000)
-        response = solve_quantum_annealing(bqm=bqm, method="DI", num_reads=1000)
+        response = solve_simulated_annealing(bqm=bqm, method="DI", num_reads=1000)
+        # response = solve_quantum_annealing(bqm=bqm, method="DI", num_reads=1000)
 
         # Analyze result
-        energy = response.first.energy
-        sample = response.first.sample
-        print(energy + hubo_offset)
-        ans1 = 1
-        ans2 = 1
-        for i in range(1, l):
-            ans1 *= 2
-            if sample[self.var_map[("x", i)]] == 1:
-                ans1 += 1
-        for i in range(l + 1, l * 2):
-            ans2 *= 2
-            if sample[self.var_map[("x", i)]] == 1:
-                ans2 += 1
+        energy = response.record.energy[0]
+        sample = response.record.sample[0]
+        self.analyze_response(response, offset=hubo_offset, input_dict={"n": n}, qubo_dict=q)
+        for i in range(0, len(response.record.sample)):
+            energy = min(energy, response.record.energy[i])
+            if self.is_answer(response.record.sample[i], input_dict={"n": n}):
+                sample = response.record.sample[i]
+        print("Best energy: ", energy + hubo_offset)
+        ans1, ans2 = self.get_answer(sample, input_dict={"n": n})
         print(ans1, ans2)
         return ans1, ans2
 
+    def is_answer(self, sample, input_dict=None):
+        n = input_dict["n"]
+        ans1, ans2 = self.get_answer(sample, input_dict=input_dict)
+        return ans1 * ans2 == n
+
+    def get_answer(self, sample, input_dict=None):
+        full_sample = []
+        for cur_var in self.var_map.keys():
+            if cur_var in self.fixed_variables:
+                full_sample.append(self.fixed_variables[cur_var])
+            else:
+                full_sample.append(sample[self.fixed_var_map[cur_var]])
+        n = input_dict["n"]
+        ans1 = 1
+        ans2 = 1
+        l = int(log(n, 2)) // 2 + 1
+        for i in range(1, l):
+            ans1 += full_sample[self.var_map[("x", i)]] * pow(2, i)
+        for i in range(l + 1, l * 2):
+            ans2 += full_sample[self.var_map[("x", i)]] * pow(2, i - l)
+        return ans1, ans2
+
+    def get_opt_energy(self, input_dict=None) -> int:
+        return 0
