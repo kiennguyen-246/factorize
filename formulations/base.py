@@ -19,7 +19,7 @@ class Formulation:
         raise NotImplementedError
 
     # Helper functions
-    def hubo_to_qubo(self, coef=1, term=()):
+    def reduce_deg(self, coef=1, term=()):
         """
         Recursively reduce a HUBO term until it becomes QUBO terms.
         The formulation for optimization is: x1x2x3 = x3s + 2x1x2 - 4x1s - 4x2s + 6s
@@ -61,17 +61,17 @@ class Formulation:
             new_terms = {prefix + new_term: new_terms[new_term] for new_term in new_terms}
             new_terms[prefix] = new_offset
             new_offset = 0
-        ans_terms = {}
-        ans_offset = new_offset
-        for new_term in new_terms:
-            opt_new_terms, opt_new_offset = self.hubo_to_qubo(new_terms[new_term], new_term)
-            for opt_new_term in opt_new_terms:
-                if opt_new_term not in ans_terms:
-                    ans_terms[opt_new_term] = opt_new_terms[opt_new_term]
-                else:
-                    ans_terms[opt_new_term] += opt_new_terms[opt_new_term]
-            ans_offset += opt_new_offset
-        return ans_terms, ans_offset
+        # ans_terms = {}
+        # ans_offset = new_offset
+        # for new_term in new_terms:
+        #     opt_new_terms, opt_new_offset = self.reduce_deg(new_terms[new_term], new_term)
+        #     for opt_new_term in opt_new_terms:
+        #         if opt_new_term not in ans_terms:
+        #             ans_terms[opt_new_term] = opt_new_terms[opt_new_term]
+        #         else:
+        #             ans_terms[opt_new_term] += opt_new_terms[opt_new_term]
+        #     ans_offset += opt_new_offset
+        return new_terms, new_offset
 
     def analyze_response(self, response, offset=0, input_dict=None, qubo_dict=None):
         """

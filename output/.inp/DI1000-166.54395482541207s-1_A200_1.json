@@ -1,0 +1,71 @@
+{
+    "config": "DI1000-166.54395482541207s-1_A200",
+    "num_vars": 9,
+    "num_qubit": 11,
+    "time_elapsed": 0.09995770454406738,
+    "best_state": {
+        "sample": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+        ],
+        "energy": -4344.0,
+        "chain_break_fraction": 0.0
+    },
+    "chain_strength_prefactor": 0.25,
+    "chain_strength": 166.54395482541207,
+    "max_chain_length": 2,
+    "timing_info": {
+        "qpu_sampling_time": 297200.0,
+        "qpu_anneal_time_per_sample": 200.0,
+        "qpu_readout_time_per_sample": 76.62,
+        "qpu_access_time": 312956.37,
+        "qpu_access_overhead_time": 1750.63,
+        "qpu_programming_time": 15756.37,
+        "qpu_delay_time_per_sample": 20.58,
+        "total_post_processing_time": 1.0,
+        "post_processing_overhead_time": 1.0
+    },
+    "embedding_info": {
+        "embedding": {
+            "3": [
+                1932
+            ],
+            "2": [
+                1902,
+                5214
+            ],
+            "0": [
+                5245,
+                1917
+            ],
+            "1": [
+                1947
+            ],
+            "4": [
+                1918
+            ],
+            "5": [
+                5260
+            ],
+            "6": [
+                5230
+            ],
+            "7": [
+                5275
+            ],
+            "8": [
+                5199
+            ]
+        },
+        "chain_break_method": "majority_vote",
+        "embedding_parameters": {},
+        "chain_strength": 166.54395482541207
+    }
+}

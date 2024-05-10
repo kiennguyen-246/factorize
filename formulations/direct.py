@@ -57,31 +57,38 @@ class DirectFormulation(Formulation):
                     hubo_terms[var_tuple] += var_coef
         hubo_offset = hubo_terms[()]
         hubo_terms.pop(())
-        print(hubo_terms)
-        print(hubo_offset)
+        print("HUBO created with terms: ", hubo_terms)
+        print("Offset: ", hubo_offset)
 
         # Optimize HUBO
-        # print(self.hubo_optimize(1, (1, 2, 4, 5)))
-        opt_hubo_terms = {}
-        for term in hubo_terms:
-            new_opt_terms, new_opt_offset = self.hubo_to_qubo(hubo_terms[term], term)
-            for new_opt_term in new_opt_terms:
-                if new_opt_term not in opt_hubo_terms:
-                    opt_hubo_terms[new_opt_term] = new_opt_terms[new_opt_term]
-                else:
-                    opt_hubo_terms[new_opt_term] += new_opt_terms[new_opt_term]
-            hubo_offset += new_opt_offset
-        # # print(opt_hubo_terms)
+        # print(self.reduce_deg(1, (0, 1, 2, 3)))
+        for deg in range(4, 2, -1):
+            opt_hubo_terms = {}
+            for term in hubo_terms:
+                new_opt_terms = {term: hubo_terms[term]}
+                new_opt_offset = 0
+                if len(term) == deg:
+                    new_opt_terms, new_opt_offset = self.reduce_deg(hubo_terms[term], term)
+                for new_opt_term in new_opt_terms:
+                    if new_opt_term not in opt_hubo_terms:
+                        opt_hubo_terms[new_opt_term] = new_opt_terms[new_opt_term]
+                    else:
+                        opt_hubo_terms[new_opt_term] += new_opt_terms[new_opt_term]
+                hubo_offset += new_opt_offset
+            print("HUBO terms after removing terms of deg {}:".format(deg), opt_hubo_terms)
+            hubo_terms = opt_hubo_terms.copy()
 
         # Initialize QUBO
         q = defaultdict(int)
-        for term in opt_hubo_terms:
+        for term in hubo_terms:
             if len(term) == 2:
-                q[term] = opt_hubo_terms[term]
+                q[term] = hubo_terms[term]
             else:
-                q[term[0], term[0]] = opt_hubo_terms[term]
+                q[term[0], term[0]] = hubo_terms[term]
         print(q)
         bqm = BinaryQuadraticModel.from_qubo(q)
+        max_coef = max([abs(q[term]) for term in q])
+        print("Maximum coefficient:", max_coef)
 
         # # 143
         # bqm.fix_variable(self.var_map[("x", 1)], 0)
@@ -90,6 +97,12 @@ class DirectFormulation(Formulation):
         # bqm.fix_variable(self.var_map[("x", 5)], 1)
         # bqm.fix_variable(self.var_map[("x", 6)], 0)
         # bqm.fix_variable(self.var_map[("x", 7)], 1)
+        # self.fixed_variables[("x", 1)] = 0
+        # self.fixed_variables[("x", 2)] = 1
+        # self.fixed_variables[("x", 3)] = 1
+        # self.fixed_variables[("x", 5)] = 1
+        # self.fixed_variables[("x", 6)] = 0
+        # self.fixed_variables[("x", 7)] = 1
 
         # 391
         # bqm.fix_variable(self.var_map[("x", 1)], 0)
@@ -130,8 +143,8 @@ class DirectFormulation(Formulation):
             new_cnt += 1
 
         # Solve QUBO
-        response = solve_simulated_annealing(bqm=bqm, method="DI", num_reads=1000)
-        # response = solve_quantum_annealing(bqm=bqm, method="DI", num_reads=1000)
+        # response = solve_simulated_annealing(bqm=bqm, method="DI", num_reads=1000)
+        response = solve_quantum_annealing(bqm=bqm, method="DI", num_reads=1000)
 
         # Analyze result
         energy = response.record.energy[0]
